@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @Author junhi
@@ -14,9 +15,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/activeUserServlet")
 public class ActiveUserServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response){
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {}
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 1、获取激活码
         String code = request.getParameter("code");
+        System.out.println(code);
         if(code != null){
             //2、调用service完成激活
             UserService service = new UserServiceImpl();
@@ -29,12 +35,12 @@ public class ActiveUserServlet extends HttpServlet {
                 msg = "激活成功，请<a href='login.html'>登录</a>";
             }else{
                 //激活失败
+                msg = "激活失败，请联系管理员！";
+
             }
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().write(msg);
 
         }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response){
-
     }
 }

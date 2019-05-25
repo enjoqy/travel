@@ -9,6 +9,7 @@ import java.io.IOException;
 
 @WebServlet("/exitServlet")
 public class ExitServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.销毁session
         request.getSession().invalidate();
@@ -17,6 +18,7 @@ public class ExitServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath()+"/login.html");
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.doPost(request, response);
     }
