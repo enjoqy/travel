@@ -19,7 +19,7 @@ import java.util.Map;
  * @Author junhi
  * @Date 2019/5/23 22:51
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/loginServlet")
 public class LoginServler extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -37,14 +37,12 @@ public class LoginServler extends HttpServlet {
 
         //3、调用service查询
         UserService service = new UserServiceImpl();
-        service.login(user);
+        User u = service.login(user);
 
         ResultInfo info = new ResultInfo();
 
-
-        System.out.println(user);
         //4、判断用户对象是否是null
-        if(user.getUsername() == ""){
+        if(u == null){
             //用户名或密码错误
             info.setFlag(false);
             info.setErrorMsg("用户名或密码错误");
@@ -52,16 +50,18 @@ public class LoginServler extends HttpServlet {
 
         //5、判断用户是否激活
         String status = "Y";
-        if(user.getUsername() != "" && !status.equals(user.getStatus())){
+        if(u != null && !status.equals(u.getStatus())){
             //用户尚未激活
             info.setFlag(false);
             info.setErrorMsg("您尚未激活，11111！");
         }
 
         //6、判断登录成功
-        if(user != null && status.equals(user.getStatus())){
+        if(u != null && status.equals(u.getStatus())){
             //登录成功
             info.setFlag(true);
+            // 设置session
+            request.getSession().setAttribute("user", u);
         }
 
         //7、相应数据
