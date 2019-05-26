@@ -1,9 +1,9 @@
 <!-- 头部 start -->
 <script>
     $(function () {
-        $.get("findUserServlet", {}, function (data) {
+        $.get("user/findOne", {}, function (data) {
             //{uid:1,name:'李四'}
-            var msg = "欢迎回来，" + data.name;
+            var msg = "欢迎回来，" + data.username;
             $("#span_username").html(msg);
 
 
