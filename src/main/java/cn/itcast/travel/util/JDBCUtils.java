@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-/*
+/**
 	1. 声明静态数据源成员变量
 	2. 创建连接池对象
 	3. 定义公有的得到数据源的方法

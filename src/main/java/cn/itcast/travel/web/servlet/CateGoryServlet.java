@@ -31,9 +31,10 @@ public class CateGoryServlet extends BaseServlet {
         // 1、调用service查询所有
         List<Category> cs = service.findAll();
         // 2、序列化json返回
-        ObjectMapper mapper = new ObjectMapper();
+        /*ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf8");
-        mapper.writeValue(response.getOutputStream(), cs);
+        mapper.writeValue(response.getOutputStream(), cs);*/
+        writeValue(cs, response);
     }
 
     public void find(HttpServletRequest request, HttpServletResponse response){
