@@ -24,10 +24,10 @@ public class BaseServlet extends HttpServlet {
         //1、获取请求的路径
         String uri = req.getRequestURI();
         // /travel/user/add
-        System.out.println("请求uri: " + uri);
+//        System.out.println("请求uri: " + uri);
         //2、获取方法的名称
         String methodName = uri.substring(uri.lastIndexOf('/') + 1);
-        System.out.println(methodName);
+//        System.out.println(methodName);
 
         //3、获取方法的对象
         try {

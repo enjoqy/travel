@@ -84,8 +84,9 @@ public class UserServlet extends BaseServlet {
         }
 
         //将info对象序列化为json
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(info);
+        /*ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);*/
+        String json = writeValueAsString(info);
 
         //将json数据写回客户端
         //设置content-type
@@ -144,10 +145,10 @@ public class UserServlet extends BaseServlet {
         }
 
         //7、相应数据
-        ObjectMapper mapper = new ObjectMapper();
-
+        /*ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(), info);
+        mapper.writeValue(response.getOutputStream(), info);*/
+        writeValue(info, response);
     }
 
     /**
@@ -164,9 +165,10 @@ public class UserServlet extends BaseServlet {
         System.out.println(user);
         //将user写回客户端
 
-        ObjectMapper mapper = new ObjectMapper();
+       /* ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(), user);
+        mapper.writeValue(response.getOutputStream(), user);*/
+       writeValue(user, response);
     }
 
     /**
