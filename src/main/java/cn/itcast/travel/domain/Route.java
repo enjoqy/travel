@@ -1,11 +1,20 @@
 package cn.itcast.travel.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 旅游线路商品实体类
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Route implements Serializable {
 
     private int rid;//线路id，必输
@@ -25,14 +34,14 @@ public class Route implements Serializable {
     private Seller seller;//所属商家
     private List<RouteImg> routeImgList;//商品详情图片列表
 
+/*
 
-
-    /**
+    *//**
      * 无参构造方法
-     */
+     *//*
     public Route(){}
 
-    /**
+    *//**
      * 有参构造方法
      * @param rid
      * @param rname
@@ -46,7 +55,7 @@ public class Route implements Serializable {
      * @param rimage
      * @param sid
      * @param sourceId
-     */
+     *//*
     public Route(int rid, String rname, double price, String routeIntroduce, String rflag, String rdate, String isThemeTour, int count, int cid, String rimage, int sid, String sourceId) {
         this.rid = rid;
         this.rname = rname;
@@ -180,5 +189,5 @@ public class Route implements Serializable {
 
     public void setSid(int sid) {
         this.sid = sid;
-    }
+    }*/
 }

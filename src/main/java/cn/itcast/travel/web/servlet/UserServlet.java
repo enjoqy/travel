@@ -125,7 +125,22 @@ public class UserServlet extends BaseServlet {
         if (u == null) {
             //用户名或密码错误
             info.setFlag(false);
-            info.setErrorMsg("用户名或密码错误");
+            info.setErrorMsg("用户名或密码错误！");
+        }
+
+        //附加，判断验证码是否正确
+        String check = request.getParameter("check");
+        HttpSession session = request.getSession();
+        String checkcode_server = (String) session.getAttribute("CHECKCODE_SERVER");
+        session.removeAttribute("CHECKCODE_SERVER");
+        /**
+         *  为了执行忽略大小写的比较，可以调用equalsIgnoreCase( )方法
+         */
+        if(check == null || !checkcode_server.equalsIgnoreCase(check)){
+            info.setFlag(false);
+            info.setErrorMsg("验证码错误！");
+            writeValue(info, response);
+            return;
         }
 
         //5、判断用户是否激活

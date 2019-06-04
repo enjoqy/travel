@@ -25,11 +25,11 @@ public class BaseServlet extends HttpServlet {
         String uri = req.getRequestURI();
         // /travel/user/add
 //        System.out.println("请求uri: " + uri);
-        //2、获取方法的名称
+        // 2、获取方法的名称
         String methodName = uri.substring(uri.lastIndexOf('/') + 1);
 //        System.out.println(methodName);
 
-        //3、获取方法的对象
+        // 3、获取方法的对象
         try {
             // 此时的this，谁调用我，我就指代谁，，子方法会被子类调用，所以指代子类
             Method method = this.getClass().getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
@@ -38,7 +38,7 @@ public class BaseServlet extends HttpServlet {
 //            method.setAccessible(true);
 
             // 调用子类中的方法，完成方法的分发
-            //4、执行方法
+            // 4、执行方法
             method.invoke(this, req, resp);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
