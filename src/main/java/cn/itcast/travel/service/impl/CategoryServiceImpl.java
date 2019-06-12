@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAll() {
 
         // 1、从redis中查询
-        // 1.1 获取jedis客户端
+        // 1.1 获取jedis客户端d
         Jedis jedis = JedisUtil.getJedis();
         // 1.2 可使用sortedset排序查询
 //        Set<String> categorys = jedis.zrange("category", 0, -1);
@@ -55,7 +55,6 @@ public class CategoryServiceImpl implements CategoryService {
                 category.setCid((int) tuple.getScore());
                 cs.add(category);
             }
-
         }
 
         return categoryDao.findAll();

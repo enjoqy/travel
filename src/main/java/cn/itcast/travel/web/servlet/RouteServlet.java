@@ -28,7 +28,7 @@ public class RouteServlet extends BaseServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public void routeQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void pageQuery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1、接收参数
         String currentPageStr = request.getParameter("currentPage");
         String pageSizeStr = request.getParameter("pageSize");
