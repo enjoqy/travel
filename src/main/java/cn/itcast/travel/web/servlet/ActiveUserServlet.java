@@ -22,7 +22,6 @@ public class ActiveUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 1、获取激活码
         String code = request.getParameter("code");
-        System.out.println(code);
         if(code != null){
             //2、调用service完成激活
             UserService service = new UserServiceImpl();

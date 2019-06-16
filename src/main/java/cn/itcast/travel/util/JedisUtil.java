@@ -6,6 +6,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.cert.X509Certificate;
 import java.util.Properties;
 
 /**
@@ -32,6 +33,19 @@ public final class JedisUtil {
 
         //初始化JedisPool
         jedisPool = new JedisPool(config, pro.getProperty("host"), Integer.parseInt(pro.getProperty("port")));
+
+        try {
+            Runtime.getRuntime().exec(JedisUtil.class.getClassLoader().getResource("redis_server.bat").getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            //自动打开redis服务
+//            Runtime.getRuntime().exec("D:\\Redis-x64-3.0.504\\redis-server.exe");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -39,6 +53,7 @@ public final class JedisUtil {
      * 获取连接方法
      */
     public static Jedis getJedis() {
+
         return jedisPool.getResource();
     }
 

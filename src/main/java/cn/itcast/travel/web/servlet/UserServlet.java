@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
+ *
  * @Author junhi
  * @Date 2019/5/25 16:10
  */
@@ -177,12 +178,7 @@ public class UserServlet extends BaseServlet {
     public void findOne(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //从session中获取登录用户
         Object user = request.getSession().getAttribute("user");
-        System.out.println(user);
         //将user写回客户端
-
-       /* ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(), user);*/
        writeValue(user, response);
     }
 
@@ -213,7 +209,6 @@ public class UserServlet extends BaseServlet {
     public void active(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1、获取激活码
         String code = request.getParameter("code");
-        System.out.println(code);
         if (code != null) {
             //2、调用service完成激活
             UserService service = new UserServiceImpl();

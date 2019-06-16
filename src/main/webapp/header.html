@@ -1,3 +1,4 @@
+<script src="js/getParameter.js"></script>
 <!-- 头部 start -->
 <script>
     $(function () {
@@ -9,6 +10,7 @@
             $(".login_out").css("display", "none");
             $(".login").css("display", "");
         });
+
 
         //查询分类数据
         $.get("category/findAll", {}, function (data) {
@@ -25,6 +27,23 @@
 
             //将lis字符串，设置到ul的html内容中
             $("#category").html(lis);
+        });
+
+
+        //给搜索按钮绑定单击事件，获取搜索输入框的内容
+        $("#search-button").click(function(){
+            //获取搜索的路线的字段
+            var rname = $("#search_input").val();
+
+            //判断rname如果不为null或者“”
+            if(rname != null && rname != "" ){
+                //url解码
+                rname = window.decodeURIComponent(rname);
+            }
+
+            var cid = getParameter("cid");
+            //跳转路径 http://localhost/travel/route_list.html?cid=5 拼接上name=xxx
+            location.href="http://localhost/travel/route_list.html?cid=" + cid + "&rname=" + rname;
         });
     });
 
@@ -50,11 +69,11 @@
     <div class="header_wrap">
         <div class="topbar">
             <div class="logo">
-                <a href="/"><img src="images/logo.jpg" alt=""></a>
+                <a href="index.html"><img src="images/logo.jpg" alt=""></a>
             </div>
             <div class="search">
-                <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                <a href="javascript:;" class="search-button">搜索</a>
+                <input id="search_input" name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                <a id="search-button" href="javascript:;" class="search-button">搜索</a>
             </div>
             <div class="hottel">
                 <div class="hot_pic">
@@ -72,15 +91,15 @@
 <!-- 首页导航 -->
 <div class="navitem">
         <ul id="category" class="nav">
-<!--        <li class="nav-active"><a href="index.html">首页</a></li>-->
-<!--        <li><a href="route_list.html">门票</a></li>-->
-<!--        <li><a href="route_list.html">酒店</a></li>-->
-<!--        <li><a href="route_list.html">香港车票</a></li>-->
-<!--        <li><a href="route_list.html">出境游</a></li>-->
-<!--        <li><a href="route_list.html">国内游</a></li>-->
-<!--        <li><a href="route_list.html">港澳游</a></li>-->
-<!--        <li><a href="route_list.html">抱团定制</a></li>-->
-<!--        <li><a href="route_list.html">全球自由行</a></li>-->
-<!--        <li><a href="favoriterank.html">收藏排行榜</a></li>-->
+        <li class="nav-active"><a href="index.html">首页</a></li>
+        <li><a href="route_list.html">门票</a></li>
+        <li><a href="route_list.html">酒店</a></li>
+        <li><a href="route_list.html">香港车票</a></li>
+        <li><a href="route_list.html">出境游</a></li>
+        <li><a href="route_list.html">国内游</a></li>
+        <li><a href="route_list.html">港澳游</a></li>
+        <li><a href="route_list.html">抱团定制</a></li>
+        <li><a href="route_list.html">全球自由行</a></li>
+        <li><a href="favoriterank.html">收藏排行榜</a></li>
     </ul>
 </div>
