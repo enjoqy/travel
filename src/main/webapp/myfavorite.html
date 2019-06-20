@@ -152,7 +152,7 @@
             </span>
         </div>
         <div class="pageNum">
-            <ul>
+            <ul id="favoritePageNum">
                 <li><a href="">首页</a></li>
                 <li class="threeword"><a href="#">上一页</a></li>
                 <li><a href="#">1</a></li>
@@ -181,23 +181,23 @@
 <script>
     $(function () {
         //循环展示收藏的路线
-        $.get("route/findFavoriteByUid", {}, function (routeList) {
-            //拼接数据
-            var lis = '';
-            for (var i = 0; i < routeList.length; i++) {
-                var li = '<div class="col-md-3">\n' +
-                    '                            <a href="route_detail.html?rid=' + routeList[i].rid + '">\n' +
-                    '                                <img src="' + routeList[i].rimage + '" alt="">\n' +
-                    '                                <div class="has_border">\n' +
-                    '                                    <h3>' + routeList[i].rname + '</h3>\n' +
-                    '                                    <div class="price">网付价<em>￥</em><strong>' + routeList[i].price + '</strong><em>起</em></div>\n' +
-                    '                                </div>\n' +
-                    '                            </a>\n' +
-                    '                        </div>'
-                lis += li;
-            }
-            $("#favoriteList").html(lis);
-        });
+        // $.get("route/findFavoriteByUid", {}, function (routeList) {
+        //     //拼接数据
+        //     var lis = '';
+        //     for (var i = 0; i < routeList.length; i++) {
+        //         var li = '<div class="col-md-3">\n' +
+        //             '                            <a href="route_detail.html?rid=' + routeList[i].rid + '">\n' +
+        //             '                                <img src="' + routeList[i].rimage + '" alt="">\n' +
+        //             '                                <div class="has_border">\n' +
+        //             '                                    <h3>' + routeList[i].rname + '</h3>\n' +
+        //             '                                    <div class="price">网付价<em>￥</em><strong>' + routeList[i].price + '</strong><em>起</em></div>\n' +
+        //             '                                </div>\n' +
+        //             '                            </a>\n' +
+        //             '                        </div>'
+        //         lis += li;
+        //     }
+        //     $("#favoriteList").html(lis);
+        // });
 
     });
 
@@ -211,10 +211,95 @@
             4.模仿百度搜索分页
             通过uid获取多少条，计算有多少页
          */
-        $.get("route/favoritePageQuery", {currentPag:currentPage, pageSize:pageSize}, function (pageBean) {
-            
+        $.get("route/favoritePageQuery", {currentPage: currentPage, pageSize: pageSize, flag:"favorite"}, function (pageBean) {
+            //1.分页工具条展示
+            //1.1展示总页码和总记录数
+            $("#totalPage").html(pageBean.totalPage);
+            $("#totalCount").html(pageBean.totalCount);
+
+            var lis = '';
+            //首页
+            var firstPage = '<li onclick="load(1, ' + pageBean.pageSize + ')"><a href="javascript:void(0);">首页</a></li>';
+            //计算上一页的页码
+            var beforeNum = pageBean.currentPage - 1;
+            if (beforeNum < 1) {
+                beforeNum = 1;
+            }
+            var beforePage = '<li onclick="load(' + beforeNum + ', ' + pageBean.pageSize + ')" class="threeword"><a href="javascript:void(0);">上一页</a></li>';
+            lis += firstPage;
+            lis += beforePage;
+
+            //定义开始位置begin，结束位置end
+            var begin;  //开始位置
+            var end;  //结束位置
+
+            if (pageBean.totalPage <= 8) {
+                //总页码不够8页
+                begin = 1;
+                end = pageBean.totalPage;
+            } else {
+                //总页码超过8页
+                begin = pageBean.currentPage - 4;
+                end = pageBean.currentPage + 3;
+
+                //2.如果前边不够4个，后边补齐8个
+                if (begin < 1) {
+                    begin = 1;
+                    end = begin + 7
+                }
+                //3.如果后边不够3个，前边补齐8个
+                if (end > pageBean.totalPage) {
+                    end = pageBean.totalPage;
+                    begin = end - 7;
+                }
+            }
+
+            //循环添加页码
+            for (var i = begin; i <= end; i++) {
+                var li;
+                if (i == pageBean.currentPage) {
+                    li = '<li class="curPage" onclick="load(' + i + ', ' + pageBean.pageSize + ')"><a href="#">' + i + '</a></li>';
+                } else {
+                    li = '<li onclick="load(' + i + ', ' + pageBean.pageSize + ')"><a href="#">' + i + '</a></li>';
+                }
+                lis += li;
+            }
+            //下一页
+            var afterNum = pageBean.currentPage + 1;
+            if (afterNum > pageBean.totalPage) {
+                afterNum = pageBean.totalPage;
+            }
+            var afterPage = '<li onclick="load(' + afterNum + ', ' + pageBean.pageSize + ')" class="threeword"><a href="javascript:;">下一页</a></li>'
+            //尾页
+            var lastPage = '<li onclick="load(' + pageBean.totalPage + ', ' + pageBean.pageSize + ')" class="threeword"><a href="javascript:;">末页</a></li>'
+            lis += afterPage;
+            lis += lastPage;
+            $("#favoritePageNum").html(lis);
+
+
+            //循环展示收藏的路线
+            //拼接数据
+            var routeLis = '';
+            for (var i = 0; i < pageBean.list.length; i++) {
+                var li = '<div class="col-md-3">\n' +
+                    '                            <a href="route_detail.html?rid=' + pageBean.list[i].rid + '">\n' +
+                    '                                <img src="' + pageBean.list[i].rimage + '" alt="">\n' +
+                    '                                <div class="has_border">\n' +
+                    '                                    <h3>' + pageBean.list[i].rname + '</h3>\n' +
+                    '                                    <div class="price">网付价<em>￥</em><strong>' + pageBean.list[i].price + '</strong><em>起</em></div>\n' +
+                    '                                </div>\n' +
+                    '                            </a>\n' +
+                    '                        </div>'
+                routeLis += li;
+            }
+            $("#favoriteList").html(routeLis);
+
         });
+
+        window.scrollTo(0,0);
     }
+
+    load(1, 8);
 
 </script>
 </body>

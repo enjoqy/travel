@@ -47,5 +47,6 @@ public interface FavoriteService {
      * @param currentPage
      * @param pageSize
      */
-    PageBean<Route> favoritePageQuery(int uid, int currentPage, int pageSize);
+    PageBean<Route> favoritePageQuery(int uid, int currentPage, int pageSize, String flag);
+
 }

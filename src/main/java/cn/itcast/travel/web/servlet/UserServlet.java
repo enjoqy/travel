@@ -4,6 +4,7 @@ import cn.itcast.travel.domain.ResultInfo;
 import cn.itcast.travel.domain.User;
 import cn.itcast.travel.service.UserService;
 import cn.itcast.travel.service.impl.UserServiceImpl;
+import cn.itcast.travel.util.Md5Util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -41,7 +44,8 @@ public class UserServlet extends BaseServlet {
         //从sesion中获取验证码
         HttpSession session = request.getSession();
         String checkcode_server = (String) session.getAttribute("CHECKCODE_SERVER");
-        session.removeAttribute("CHECKCODE_SERVER");//为了保证验证码只能使用一次
+        //为了保证验证码只能使用一次
+        session.removeAttribute("CHECKCODE_SERVER");
         //比较
         if (checkcode_server == null || !checkcode_server.equalsIgnoreCase(check)) {
             //验证码错误
@@ -56,10 +60,8 @@ public class UserServlet extends BaseServlet {
             response.getWriter().write(json);
             return;
         }
-
         //1.获取数据
         Map<String, String[]> map = request.getParameterMap();
-
         //2.封装对象
         User user = new User();
         try {
@@ -69,6 +71,9 @@ public class UserServlet extends BaseServlet {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        //对用户密码进行MD5加密
+        String password = Md5Util.encodeByMd5ToSpring(user.getPassword());
+        user.setPassword(password);
 
         //3.调用service完成注册
         //UserService service = new UserServiceImpl();
@@ -83,7 +88,6 @@ public class UserServlet extends BaseServlet {
             info.setFlag(false);
             info.setErrorMsg("用户名已存在!");
         }
-
         //将info对象序列化为json
         /*ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(info);*/
@@ -115,6 +119,11 @@ public class UserServlet extends BaseServlet {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+
+        //进行md5加密，传到数据库比对
+        String passwordStr = user.getPassword();
+        String password = Md5Util.encodeByMd5ToSpring(passwordStr);
+        user.setPassword(password);
 
         //3、调用service查询
         //UserService service = new UserServiceImpl();
@@ -161,9 +170,6 @@ public class UserServlet extends BaseServlet {
         }
 
         //7、相应数据
-        /*ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(), info);*/
         writeValue(info, response);
     }
 

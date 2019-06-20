@@ -30,6 +30,7 @@ public class RouteServlet extends BaseServlet {
 
     /**
      * 分页查询
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -45,7 +46,7 @@ public class RouteServlet extends BaseServlet {
         String rname = request.getParameter("rname");
         rname = new String(rname.getBytes("iso-8859-1"), "utf-8");
 
-        if(rname.equals("null")){
+        if (rname.equals("null")) {
             rname = "";
         }
 
@@ -59,21 +60,21 @@ public class RouteServlet extends BaseServlet {
 
         //2、处理参数，cid：类别id
         int cid = 0;
-        if(cidStr != null && cidStr.length() > 0 && !"null".equals(cidStr)){
+        if (cidStr != null && cidStr.length() > 0 && !"null".equals(cidStr)) {
             cid = Integer.parseInt(cidStr);
         }
         //当前页码，如果不传递，默认显示第一页
         int currentPage = 0;
-        if(currentPageStr != null && currentPageStr.length() > 0){
+        if (currentPageStr != null && currentPageStr.length() > 0) {
             currentPage = Integer.parseInt(currentPageStr);
-        }else {
+        } else {
             currentPage = 1;
         }
         //每页显示的条数，如果不传递，默认显示每页5条
         int pageSize = 0;
-        if(pageSizeStr != null && pageSizeStr.length() > 0){
+        if (pageSizeStr != null && pageSizeStr.length() > 0) {
             pageSize = Integer.parseInt(pageSizeStr);
-        }else {
+        } else {
             pageSize = 5;
         }
 
@@ -87,6 +88,7 @@ public class RouteServlet extends BaseServlet {
 
     /**
      * 根据id查询一个旅游线路的详细信息
+     *
      * @param request
      * @param response
      */
@@ -101,6 +103,7 @@ public class RouteServlet extends BaseServlet {
 
     /**
      * 判断当前用户是否收藏过该线路
+     *
      * @param request
      * @param response
      */
@@ -110,10 +113,10 @@ public class RouteServlet extends BaseServlet {
         //2、获取当前登录用户 user
         User user = (User) request.getSession().getAttribute("user");
         int uid;  //用户id
-        if(user == null){
+        if (user == null) {
             //用户尚未登录
             uid = 0;
-        }else {
+        } else {
             //用户已经登录
             uid = user.getUid();
         }
@@ -127,6 +130,7 @@ public class RouteServlet extends BaseServlet {
 
     /**
      * 添加收藏
+     *
      * @param request
      * @param response
      * @throws IOException
@@ -138,10 +142,10 @@ public class RouteServlet extends BaseServlet {
         User user = (User) request.getSession().getAttribute("user");
         //用户id
         int uid;
-        if(user == null){
+        if (user == null) {
             //用户尚未登录
             return;
-        }else {
+        } else {
             //用户已经登录
             uid = user.getUid();
         }
@@ -152,6 +156,7 @@ public class RouteServlet extends BaseServlet {
 
     /**
      * 通过用户的uid 查询收藏的rid，返回一个List<Route>
+     *
      * @param request
      * @param response
      */
@@ -169,6 +174,7 @@ public class RouteServlet extends BaseServlet {
     /**
      * 收藏路线，分页查询
      * 通过用户的uid 查询收藏的route的数量，进行分页处理
+     *
      * @param request
      * @param response
      */
@@ -176,32 +182,36 @@ public class RouteServlet extends BaseServlet {
         //1、接收参数
         String currentPageStr = request.getParameter("currentPage");
         String pageSizeStr = request.getParameter("pageSize");
+        //这个标志是判断查询用户收藏，还是查询rank排行榜
+        String flag = request.getParameter("flag");
         User user = (User) request.getSession().getAttribute("user");
-        int uid = user.getUid();
+        int uid = 0;
+        if(user != null){
+            uid = user.getUid();
+        }
 
         //当前页码，如果不传递，默认显示第一页
         int currentPage = 0;
-        if(currentPageStr != null && currentPageStr.length() > 0){
+        if (currentPageStr != null && currentPageStr.length() > 0) {
             currentPage = Integer.parseInt(currentPageStr);
-        }else {
+        } else {
             currentPage = 1;
         }
 
         //每页显示的条数，如果不传递，默认显示每页8条
         int pageSize = 0;
-        if(pageSizeStr != null && pageSizeStr.length() > 0){
+        if (pageSizeStr != null && pageSizeStr.length() > 0) {
             pageSize = Integer.parseInt(pageSizeStr);
-        }else {
+        } else {
             pageSize = 8;
         }
 
+        //flag这个标志是判断查询用户收藏，还是查询rank排行榜
         //2、调用service查询PageBean对象
-        PageBean<Route> pageBean = favoriteService.favoritePageQuery(uid, currentPage, pageSize);
+        PageBean<Route> pageBean = favoriteService.favoritePageQuery(uid, currentPage, pageSize, flag);
 
         //3、将PageBean对象序列化为json，返回
         writeValue(pageBean, response);
-
-
     }
 
 }

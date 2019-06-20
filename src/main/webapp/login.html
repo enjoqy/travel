@@ -20,7 +20,6 @@
     <script src="js/jquery-3.3.1.js"></script>
 
     <script>
-
         $(function () {
             //1.给登录按钮绑定单击事件
             $("#btn_sub").click(function () {
@@ -37,11 +36,7 @@
                 });
             });
         });
-
-
         //3.处理响应结果
-
-
     </script>
 </head>
 
@@ -55,13 +50,13 @@
     </div>
     <div class="login-box">
         <div class="title">
-            <img src="images/login_logo.png" alt="">
-            <span>欢迎登录黑马旅游账户</span>
+            <img src="images/login_logo_.gif" alt="">
+            <span>欢迎登录黑狗旅游账户</span>
         </div>
         <div class="login_inner">
 
             <!--登录错误提示消息-->
-            <div id="errorMsg" class="alert alert-danger"></div>
+            <div id="errorMsg" class="alert-danger" style="color: red; padding: 3px; height: 30px;"></div>
             <form id="loginForm" action="" method="post" accept-charset="utf-8">
                 <input type="hidden" name="action" value="login"/>
                 <input name="username" type="text" placeholder="请输入账号" autocomplete="off">

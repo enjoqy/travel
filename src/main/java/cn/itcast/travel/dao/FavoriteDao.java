@@ -42,4 +42,27 @@ public interface FavoriteDao {
      * @return
      */
     List<Route> findRouteByUid(int uid);
+
+    /**
+     * 查询用户收藏的分页大小
+     * @param uid
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<Route> findFavoriteByPage(int uid, int start, int pageSize);
+
+    /**
+     * 查询收藏排行榜的分页大小
+     * @param start
+     * @param pageSize
+     * @return
+     */
+    List<Route> findRankFavoriteByPage(int start, int pageSize);
+
+    /**
+     * 查询收藏数量count>0的总数量
+     * @return
+     */
+    int findRouteByCount();
 }

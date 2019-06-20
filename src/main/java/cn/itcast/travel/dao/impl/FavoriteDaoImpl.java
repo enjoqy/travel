@@ -35,6 +35,10 @@ public class FavoriteDaoImpl implements FavoriteDao {
     public void addFavorite(int rid, int uid) {
         String sql = "insert into tab_favorite values(?, ?, ?) ";
         template.update(sql, rid, new Date(), uid);
+
+        //将收藏数量同步到route表中
+        String updateSql = "update tab_route set count = count + 1 where rid = ? ";
+        template.update(updateSql, rid);
     }
 
     @Override
@@ -47,5 +51,23 @@ public class FavoriteDaoImpl implements FavoriteDao {
     public List<Route> findRouteByUid(int uid) {
         String sql = "select * from tab_route, tab_favorite where uid = ? and tab_route.rid = tab_favorite.rid ";
         return template.query(sql, new BeanPropertyRowMapper<Route>(Route.class), uid);
+    }
+
+    @Override
+    public List<Route> findFavoriteByPage(int uid, int start, int pageSize) {
+        String sql = "select * from tab_favorite, tab_route where tab_favorite.rid = tab_route.rid and uid = ? limit ? , ?";
+        return template.query(sql, new BeanPropertyRowMapper<Route>(Route.class), uid, start, pageSize);
+    }
+
+    @Override
+    public List<Route> findRankFavoriteByPage(int start, int pageSize) {
+        String sql = "select * from tab_route where count >0 order by count desc limit ? , ?";
+        return template.query(sql, new BeanPropertyRowMapper<Route>(Route.class), start, pageSize);
+    }
+
+    @Override
+    public int findRouteByCount() {
+        String sql = "select count(*) from tab_route where count >0 ";
+        return template.queryForObject(sql, Integer.class);
     }
 }

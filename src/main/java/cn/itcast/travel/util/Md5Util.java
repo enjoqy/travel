@@ -1,5 +1,7 @@
 package cn.itcast.travel.util;
 
+import org.springframework.util.DigestUtils;
+
 import java.security.MessageDigest;
 
 /**
@@ -54,13 +56,31 @@ public final class Md5Util {
 		return hex[d1] + hex[d2];
 	}
 	private static String[] hex = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"};
+
+	/**
+	 * 使用spring的工具类，生成一个md5密码
+	 * @param str
+	 * @return
+	 */
+	public static String encodeByMd5ToSpring(String str){
+		String code = DigestUtils.md5DigestAsHex(str.getBytes());
+		String codeTmp = code.substring(11) + "我要加盐了";
+		String codeStr = DigestUtils.md5DigestAsHex(codeTmp.getBytes());
+		return codeStr;
+	}
+
 	/**
 	 * 测试
 	 */
 	public static void main(String[] args) throws Exception{
-		String password = "123456";
+		String password = "123";
 		String passwordMD5 = Md5Util.encodeByMd5(password);
 		System.out.println(password);
 		System.out.println(passwordMD5);
+
+		String s = Md5Util.encodeByMd5ToSpring("123");
+		System.out.println(s);
+
+
 	}
 }

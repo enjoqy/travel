@@ -26,7 +26,7 @@
 
         })
 
-        function load(cid,  currentPage, rname) {
+        function load(cid, currentPage, rname) {
             //发送ajax请求，请求route/pageQuery,传递cid
             $.get("route/pageQuery", {cid: cid, currentPage: currentPage, rname: rname}, function (pageBean) {
                 //解析pageBean的数据展示到页面上
@@ -36,13 +36,13 @@
                 $("#totalPage").html(pageBean.totalPage);
 
                 var lis = "";
-                var firstPage = '<li onclick="javascript:load(' + cid + ', 1, \'' + rname+ '\');"><a href="javascript:void(0);">首页</a></li>';
+                var firstPage = '<li onclick="javascript:load(' + cid + ', 1, \'' + rname + '\');"><a href="javascript:void(0);">首页</a></li>';
                 //计算上一页的页码
                 var beforeNum = pageBean.currentPage - 1;
                 if (beforeNum < 1) {
                     beforeNum = 1;
                 }
-                var beforePage = '<li class="threeword" onclick="javascript:load('+ cid +','+ beforeNum +',\''+ rname +'\');"><a href="javascript:void(0)">上一页</a></li>'
+                var beforePage = '<li class="threeword" onclick="javascript:load(' + cid + ',' + beforeNum + ',\'' + rname + '\');"><a href="javascript:void(0)">上一页</a></li>'
                 lis += firstPage;
                 lis += beforePage;
 
@@ -84,9 +84,9 @@
                     //判断当前页码是否等于i
                     var li;
                     if (pageBean.currentPage == i) {
-                        li = '<li class="curPage" onclick="javascript:load('+ cid +','+ i +', \''+ rname +'\')"><a href="javascript:void(0)">' + i + '</a></li>';
+                        li = '<li class="curPage" onclick="javascript:load(' + cid + ',' + i + ', \'' + rname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
                     } else {
-                        li = '<li onclick="javascript:load(' + cid + ',' + i + ',\''+ rname +'\')"><a href="javascript:void(0)">' + i + '</a></li>';
+                        li = '<li onclick="javascript:load(' + cid + ',' + i + ',\'' + rname + '\')"><a href="javascript:void(0)">' + i + '</a></li>';
                     }
                     //创建页码li
                     //拼接字符串
@@ -97,8 +97,8 @@
                 if (afterNum >= pageBean.totalPage) {
                     afterNum = pageBean.totalPage;
                 }
-                var li = '<li class="threeword" onclick="javascript:load(' + cid + ',' + afterNum + ',\''+ rname +'\')"><a href="javascript:;">下一页</a></li>\n' +
-                    ' <li class="threeword" onclick="javascript:load(' + cid + ',' + pageBean.totalPage + ', \''+ rname +'\')"><a href="javascript:;">末页</a></li>';
+                var li = '<li class="threeword" onclick="javascript:load(' + cid + ',' + afterNum + ',\'' + rname + '\')"><a href="javascript:;">下一页</a></li>\n' +
+                    ' <li class="threeword" onclick="javascript:load(' + cid + ',' + pageBean.totalPage + ', \'' + rname + '\')"><a href="javascript:;">末页</a></li>';
                 lis += li;
                 //将lis内容设置到 ul
                 $("#pageNum").html(lis);
@@ -123,7 +123,7 @@
                         '                                    <span>' + route.price + '</span>\n' +
                         '                                    <span>起</span>\n' +
                         '                                </p>\n' +
-                        '                                <p><a href="route_detail.html?rid='+ route.rid +'">查看详情</a></p>\n' +
+                        '                                <p><a href="route_detail.html?rid=' + route.rid + '">查看详情</a></p>\n' +
                         '                            </div>\n' +
                         '                        </li>'
                     route_lis += li;

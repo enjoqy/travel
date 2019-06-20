@@ -15,10 +15,17 @@
         //查询分类数据
         $.get("category/findAll", {}, function (data) {
             // [{cid:1, cname:国内游}, {}, {}]
-            var lis = '<li class="nav-active"><a href="index.html">首页</a></li>'
+            var lis = '<li onclick="addColor()" class="nav-active"><a href="index.html">首页</a></li>'
+            var cid = getParameter("cid");
             //遍历数组，拼接字符串（<li>）
             for (var i = 0; i < data.length; i++) {
-                var li = '<li><a href="route_list.html?cid=' + data[i].cid + '" >' + data[i].cname + '</a></li>';
+                var li = '';
+                if(cid == (i + 1)){
+                    li = '<li class="nav-active"><a href="route_list.html?cid=' + data[i].cid + '" >' + data[i].cname + '</a></li>';
+                }else{
+                    li = '<li><a href="route_list.html?cid=' + data[i].cid + '" >' + data[i].cname + '</a></li>';
+
+                }
                 lis += li;
             }
 
@@ -31,27 +38,35 @@
 
 
         //给搜索按钮绑定单击事件，获取搜索输入框的内容
-        $("#search-button").click(function(){
+        $("#search-button").click(function () {
             //获取搜索的路线的字段
             var rname = $("#search_input").val();
 
             //判断rname如果不为null或者“”
-            if(rname != null && rname != "" ){
+            if (rname != null && rname != "") {
                 //url解码
                 rname = window.decodeURIComponent(rname);
             }
 
             var cid = getParameter("cid");
             //跳转路径 http://localhost/travel/route_list.html?cid=5 拼接上name=xxx
-            location.href="http://localhost/travel/route_list.html?cid=" + cid + "&rname=" + rname;
+            location.href = "http://localhost/travel/route_list.html?cid=" + cid + "&rname=" + rname;
         });
+
+        //给导航条加选中样式
+        var cid = getParameter("cid");
+        function addColor() {
+
+
+        }
+
     });
 
 </script>
 
 <header id="header">
     <div class="top_banner">
-        <img src="images/top_banner.jpg" alt="">
+        <img src="images/top_banner_.jpg" alt="">
     </div>
     <div class="shortcut">
         <!-- 未登录状态  -->
@@ -72,7 +87,8 @@
                 <a href="index.html"><img src="images/logo.jpg" alt=""></a>
             </div>
             <div class="search">
-                <input id="search_input" name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                <input id="search_input" name="" type="text" placeholder="请输入路线名称" class="search_input"
+                       autocomplete="off">
                 <a id="search-button" href="javascript:;" class="search-button">搜索</a>
             </div>
             <div class="hottel">
@@ -81,7 +97,7 @@
                 </div>
                 <div class="hot_tel">
                     <p class="hot_time">客服热线(9:00-6:00)</p>
-                    <p class="hot_num">400-618-9090</p>
+                    <p class="hot_num">左右左右，BABA</p>
                 </div>
             </div>
         </div>
@@ -90,7 +106,7 @@
 <!-- 头部 end -->
 <!-- 首页导航 -->
 <div class="navitem">
-        <ul id="category" class="nav">
+    <ul id="category" class="nav">
         <li class="nav-active"><a href="index.html">首页</a></li>
         <li><a href="route_list.html">门票</a></li>
         <li><a href="route_list.html">酒店</a></li>
